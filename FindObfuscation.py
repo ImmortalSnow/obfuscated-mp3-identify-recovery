@@ -8,7 +8,7 @@ TRACE=True
 
 
 from VersionIdentifier import FrameID
-import time, re, sys, FirstFrame, SecondaryFrames, os, ReadAsByte, ssdeep
+import time, re, sys, FrameFind, os, ReadAsByte, ssdeep
 
 def mp3_check(RecoveryData,RecoveryFile):
     frame_count = 0
@@ -31,21 +31,21 @@ def find_frames(FileToRead, Version, frame_count, RecoveryFile):
     strt_frame = min([m.start() for m in re.finditer(Version, FileToRead)])
     last_indx = max([m.start() for m in re.finditer(Version, FileToRead)])
     while frame_count == 0:
-        nxt_frame = FirstFrame.Frame(FileToRead,strt_frame, RecoveryFile)
+        nxt_frame = FrameFind.FirstFrame(FileToRead,strt_frame, RecoveryFile)
         frame_count += 1
     while nxt_frame < last_indx:
         if FileToRead[nxt_frame: (nxt_frame +4)] == Version:
-            nxt_frame = SecondaryFrames.Frame(FileToRead, nxt_frame, RecoveryFile)
+            nxt_frame = FrameFind.SecondaryFrames(FileToRead, nxt_frame, RecoveryFile)
             frame_count += 1
         ##On occasion, it has been noted that the padding bit may be set, but no padding is seen in the file.
         #In these instances, the figures for each frame are thrown off slightly.
         #To get round this, i have ibcluded code that will adjust the frame header retrieval by one byte,
         ## forwards or backwards, as needed to recover the correct frame
         elif FileToRead[(nxt_frame-2): (nxt_frame +2)] == Version:
-            nxt_frame = SecondaryFrames.Frame(FileToRead, (nxt_frame-2), RecoveryFile)
+            nxt_frame = FrameFind.SecondaryFrames(FileToRead, (nxt_frame-2), RecoveryFile)
             frame_count += 1
         elif FileToRead[(nxt_frame+2): (nxt_frame +6)] == Version:
-            nxt_frame = SecondaryFrames.Frame(FileToRead, (nxt_frame+2), RecoveryFile)
+            nxt_frame = FrameFind.SecondaryFrames(FileToRead, (nxt_frame+2), RecoveryFile)
             frame_count += 1
     return frame_count
     
@@ -77,7 +77,7 @@ def main():
     
 
     if len(sys.argv) != 4:
-        print '\nUsage: FrameFinder.py *Mount point of disk to scan for obfuscated mp3 files* *Directory to write recovered files to* *Hash Library file*'
+        print '\nUsage: FindObfuscation.py *Mount point of disk to scan for obfuscated mp3 files* *Directory to write recovered files to* *Hash Library file*'
         print '\tPlease ensure you provide:'
         print '\t\tThe mount point of the disk or image to be scanned for MP3 files'
         print '\t\tThe directory you want any recovered files stored'
