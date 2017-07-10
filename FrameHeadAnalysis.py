@@ -2,9 +2,9 @@
 """
 Created on Tue Dec 20 21:33:17 2016
 
-@author: ImmortalSnow
+@author: Paul Flack
 
-Desc: The modules of this script identify the different patrts of a frame header
+Desc: The modules of this script identify the different parts of a frame header
 """
 
 #Calculates the MPEG version from the frame header
@@ -13,6 +13,8 @@ def VersionCalc(frameHeader):
         versionID = 1
     elif frameHeader[11]==  '1' and frameHeader[12] == '0':
         versionID = 2
+    elif frameHeader[11]==  '0' and frameHeader[12] == '0':
+        versionID = 2.5
     return versionID
 
 #Calculates the Layer of the MPEG.

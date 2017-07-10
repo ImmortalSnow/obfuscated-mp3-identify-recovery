@@ -11,7 +11,7 @@ import sys
 from binascii import hexlify
 
 TRACE=True
-#sys.argv.append('L:\Hons Year\Honours Project\Code\TestCases\MP3Test.mp3')
+
 
 def fileReader(FileToRead):
     RecoveryData=[]
@@ -35,12 +35,10 @@ def main():
         print 'Usage: ReadAsByte.py *Name of file to read*'
         print 'Please ensure you provide the name of the file you want to read'
     else:
-        fileReader(sys.argv[1])
-        
-      
-    
+        fileReader(sys.argv[1])       
+         
 if __name__ == '__main__':
-    if TRACE: print '[S] Recovery Module called as script, calling main()'
+    if TRACE: print '[S] ReadAsByte Module called as script, calling main()'
     main()
 else:
-    if TRACE: print '[L] Recovery Module imported as library, not calling main'
+    if TRACE: print '[L] ReadAsByte Module imported as library, not calling main'

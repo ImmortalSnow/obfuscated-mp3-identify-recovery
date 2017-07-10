@@ -2,7 +2,9 @@
 """
 Created on Fri Dec 30 03:13:41 2016
 
-@author: ImmortalSnow
+@author: Paul Flack
+
+This is a secondary script loaded as part of my Honours Project
 """
 
 TRACE=True
